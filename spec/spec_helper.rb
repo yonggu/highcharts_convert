@@ -1,0 +1,1 @@
+require 'highcharts_convert'
