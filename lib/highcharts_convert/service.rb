@@ -1,5 +1,7 @@
 require 'fileutils'
 require 'highcharts_convert/phantomjs'
+require 'highcharts_convert/outfile_builder'
+require 'highcharts_convert/command_builder'
 
 module HighchartsConvert
   class Service
@@ -11,16 +13,12 @@ module HighchartsConvert
     end
 
     def export(infile, options = {})
-      command = ["phantomjs highcharts-convert.js"]
-      command << "-infile #{infile}"
-      command << "-outfile #{options[:outfile]}" if options[:outfile]
-      command << "-scale #{options[:scale]}" if options[:scale]
-      command << "-constr #{options[:constr]}" if options[:constr]
-      command << "-callback #{options[:callback]}" if options[:callback]
-
+      outfile = HighchartsConvert::OutfileBuilder.new.build(options[:outfile])
+      command = HighchartsConvert::CommandBuilder.new.build(options.merge(infile: infile, outfile: outfile))
       FileUtils.cd(phantomjs_exporting_server_directory) do
-        system command.join(" ")
+        system command
       end
+      outfile
     end
 
     private

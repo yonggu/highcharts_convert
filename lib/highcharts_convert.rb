@@ -1,5 +1,7 @@
 require "highcharts_convert/version"
 require "highcharts_convert/phantomjs"
+require "highcharts_convert/outfile_builder"
+require "highcharts_convert/command_builder"
 require "highcharts_convert/service"
 
 module HighchartsConvert
